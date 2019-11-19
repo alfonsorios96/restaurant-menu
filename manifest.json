@@ -1,0 +1,6 @@
+{
+  "name": "restaurant-menu",
+  "short_name": "restaurant-menu",
+  "start_url": "/",
+  "display": "standalone"
+}

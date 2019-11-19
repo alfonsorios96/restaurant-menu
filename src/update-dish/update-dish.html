@@ -1,0 +1,180 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+
+<dom-module id="update-dish">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            .container {
+                display: flex;
+                justify-content: space-evenly;
+            }
+
+            paper-card.form {
+                width: 300px;
+            }
+
+            paper-card.preview {
+                width: 300px; /*container-width*/
+                overflow: hidden; /*hide bounds of image */
+                margin: 0; /*reset margin of figure tag*/
+
+                --paper-card-header-image: {
+                    display: block; /*remove inline-block spaces*/
+                    width: 100%; /*make image streatch*/
+                };
+            }
+
+            .cafe-header {
+                @apply --paper-font-headline;
+            }
+
+            .cafe-light {
+                color: var(--paper-grey-600);
+            }
+
+            .cafe-location {
+                float: right;
+                font-size: 15px;
+                vertical-align: middle;
+            }
+
+            .horizontal {
+                display: flex;
+                justify-content: center;
+            }
+
+            iron-icon.star {
+                --iron-icon-width: 16px;
+                --iron-icon-height: 16px;
+                color: var(--paper-amber-500);
+            }
+
+            iron-icon.star:last-of-type {
+                color: var(--paper-grey-500);
+            }
+
+            paper-button {
+                width: 100%;
+            }
+
+            paper-button.info {
+                background-color: #3367d6;
+                color: white;
+            }
+        </style>
+
+        <div class="container">
+            <paper-card class="form">
+                <div class="card-content">
+                    <h2>Nuevo platillo</h2>
+                    <paper-input label="Nombre" id="name" value="{{name}}">
+                        <iron-icon slot="prefix" icon="editor:border-color"></iron-icon>
+                    </paper-input>
+                    <paper-input label="Descripcion" id="description" value="{{description}}">
+                        <iron-icon slot="prefix" icon="description"></iron-icon>
+                    </paper-input>
+                    <paper-input label="Calorias" id="energyValue" value="{{energyValue}}">
+                        <iron-icon slot="prefix" icon="favorite"></iron-icon>
+                    </paper-input>
+                    <paper-input label="Precio" id="price" value="{{price}}">
+                        <iron-icon slot="prefix" icon="editor:monetization-on"></iron-icon>
+                    </paper-input>
+                    <paper-input label="Imagen" id="image" value="{{image}}">
+                        <iron-icon slot="prefix" icon="editor:insert-photo"></iron-icon>
+                    </paper-input>
+                    <paper-input label="Rate" id="rate" value="{{rate}}">
+                        <iron-icon slot="prefix" icon="star"></iron-icon>
+                    </paper-input>
+                </div>
+                <div class="card-actions">
+                    <paper-button class="info" on-click="__createDish">Guardar</paper-button>
+                </div>
+            </paper-card>
+
+            <paper-card class="preview"
+                        image="{{image}}">
+                <div class="card-content">
+                    <div class="cafe-header">{{name}}
+                        <div class="cafe-location cafe-light">
+                            <iron-icon icon="communication:location-on"></iron-icon>
+                            <span>{{energyValue}} cal</span>
+                        </div>
+                    </div>
+                    <div class="cafe-rating">
+                        <iron-icon class="star" icon="star"></iron-icon>
+                        <iron-icon class="star" icon="star"></iron-icon>
+                        <iron-icon class="star" icon="star"></iron-icon>
+                        <iron-icon class="star" icon="star"></iron-icon>
+                        <iron-icon class="star" icon="star"></iron-icon>
+                    </div>
+                    <p>${{price}}.00 MXN</p>
+                    <p class="cafe-light">{{description}}</p>
+                </div>
+            </paper-card>
+        </div>
+    </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class UpdateDish extends Polymer.Element {
+            static get is() {
+                return 'update-dish';
+            }
+
+            static get properties() {
+                return {
+                    dish: {
+                        type: Object
+                    }
+                };
+            }
+
+            __createDish(){
+                this.dispatchEvent(new CustomEvent('dish-updated', {
+                    detail: this.__formNewDish()
+                }));
+                this.__clearForm();
+            }
+
+            __formNewDish(){
+                return {
+                    image: this.$.image.value,
+                    name: this.$.name.value,
+                    energyValue: this.$.energyValue.value,
+                    description: this.$.description.value,
+                    price: this.$.price.value
+                };
+            }
+
+            __clearForm(){
+                for (const node of Object.values(this.$))
+                    node.value = '';
+            }
+
+            __setProperties(){
+                this.$.name.value = this.dish.name;
+                this.$.description.value = this.dish.description;
+                this.$.image.value = this.dish.image;
+                this.$.price.value = this.dish.price;
+                this.$.energyValue.value = this.dish.energyValue;
+                this.$.rate.value = this.dish.rate;
+            }
+        }
+
+        window.customElements.define(UpdateDish.is, UpdateDish);
+    </script>
+</dom-module>

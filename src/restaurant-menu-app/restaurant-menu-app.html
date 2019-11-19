@@ -1,0 +1,286 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../create-dish/create-dish.html">
+
+<dom-module id="restaurant-menu-app">
+    <template>
+        <style>
+            :host {
+                --paper-font-common-base: {
+                    font-family: Raleway, sans-serif;
+                };
+            }
+
+            app-drawer-layout:not([narrow]) [drawer-toggle] {
+                display: none;
+            }
+
+            .avatar-container {
+                position: relative;
+                border: 2px solid #00AA8D;
+                border-radius: 50%;
+                height: 90px;
+                padding: 2px;
+                width: 90px;
+                margin: 20px auto;
+            }
+
+            .avatar-container .image {
+                background-image: url('../assets/uwu.svg');
+                background-size: contain;
+                vertical-align: middle;
+                background-repeat: no-repeat;
+                border-radius: 50%;
+                height: 100%;
+                width: 100%;
+            }
+
+            .contact-info {
+                margin: 0 20px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid #CCC;
+                text-align: center;
+            }
+
+            .contact-info .name {
+                font-weight: bold;
+            }
+
+            .contact-info .email {
+                color: #999;
+            }
+
+            paper-item {
+                height: 54px;
+            }
+
+            paper-item > a {
+                width: 100%;
+                height: 100%;
+                line-height: 54px;
+                text-align: center;
+                text-decoration: none;
+                color: black;
+            }
+
+            paper-icon-button {
+                --paper-icon-button-ink-color: white;
+            }
+
+            paper-card {
+                width: 400px; /*container-width*/
+                overflow: hidden; /*hide bounds of image */
+                margin: 0; /*reset margin of figure tag*/
+
+                --paper-card-header-image: {
+                    display: block; /*remove inline-block spaces*/
+                    width: 100%; /*make image streatch*/
+                };
+            }
+
+            .cafe-header {
+                @apply --paper-font-headline;
+            }
+
+            .cafe-light {
+                color: var(--paper-grey-600);
+            }
+
+            .cafe-location {
+                float: right;
+                font-size: 15px;
+                vertical-align: middle;
+            }
+
+            .horizontal {
+                display: flex;
+                justify-content: center;
+            }
+
+            iron-icon.star {
+                --iron-icon-width: 16px;
+                --iron-icon-height: 16px;
+                color: var(--paper-amber-500);
+            }
+
+            iron-icon.star:last-of-type {
+                color: var(--paper-grey-500);
+            }
+
+            paper-button.info {
+                background-color: #3367d6;
+                color: white;
+            }
+
+            paper-button.error {
+                background-color: #ff0000;
+                color: white;
+            }
+        </style>
+
+        <app-route route="{{route}}" data="{{pageData}}" pattern="/:page"></app-route>
+        <app-location route="{{route}}"></app-location>
+
+        <app-drawer-layout responsive-width="1280px">
+            <!-- nav panel -->
+            <app-drawer id="drawer" swipe-open slot="drawer">
+                <app-header-layout has-scrolling-region>
+                    <app-header fixed slot="header">
+                        <div class="avatar-container">
+                            <div class="image"></div>
+                        </div>
+                        <div class="contact-info">
+                            <div class="name">Tamales de la aldea oculta entre los grafos uwu</div>
+                            <div class="email">uwu@tamales.com</div>
+                        </div>
+                    </app-header>
+                    <!-- nav menu -->
+                    <!-- Two way binding to the selected property has been removed due to polymer/issues/4405 -->
+                    <paper-listbox selected="{{pageData.page}}" attr-for-selected="name">
+                        <paper-item name="menu">
+                            <a href="menu">Menu</a>
+                        </paper-item>
+                        <paper-item name="create">
+                            <a href="create">Crear nuevo platillo</a>
+                        </paper-item>
+                    </paper-listbox>
+                </app-header-layout>
+            </app-drawer>
+            <!-- list/detail pages -->
+            <iron-pages selected="{{pageData.page}}" attr-for-selected="name">
+                <section name="menu">
+                    <template is="dom-repeat" items="[[dishes]]" as="dish">
+                        <paper-card
+                                image="[[dish.image]]">
+                            <div class="card-content">
+                                <div class="cafe-header">[[dish.name]]
+                                    <div class="cafe-location cafe-light">
+                                        <iron-icon icon="communication:location-on"></iron-icon>
+                                        <span>[[dish.energyValue]] cal</span>
+                                    </div>
+                                </div>
+                                <div class="cafe-rating">
+                                    <iron-icon class="star" icon="star"></iron-icon>
+                                    <iron-icon class="star" icon="star"></iron-icon>
+                                    <iron-icon class="star" icon="star"></iron-icon>
+                                    <iron-icon class="star" icon="star"></iron-icon>
+                                    <iron-icon class="star" icon="star"></iron-icon>
+                                </div>
+                                <p>$[[dish.price]].00 MXN</p>
+                                <p class="cafe-light">[[dish.description]]</p>
+                            </div>
+                            <div class="card-actions">
+                                <div class="horizontal">
+                                    <paper-button class="info" on-click="__updateDish">Modificar</paper-button>
+                                    <paper-button class="error">Eliminar</paper-button>
+                                </div>
+                            </div>
+                        </paper-card>
+                    </template>
+                </section>
+                <create-dish name="create" on-dish-created="__createDish"></create-dish>
+            </iron-pages>
+        </app-drawer-layout>
+    </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class RestaurantMenuApp extends Polymer.Element {
+            static get is() {
+                return 'restaurant-menu-app';
+            }
+
+            static get properties() {
+                return {
+                    route: Object,
+                    pageData: Object,
+                    dishes: {
+                        type: Array,
+                        value: [
+                            /*{
+                                image: 'https://laroussecocina.mx/wp-content/uploads/2017/12/tamal-de-amarillo-001-larousse-cocina.jpg',
+                                name: 'Tamal oaxaqueño rojo',
+                                energyValue: 586,
+                                description: 'Delicioso tamalito oaxaqueño de una tierna pechuga de pollo adobada y sazonada con una salsa carmesí.',
+                                price: 40
+                            },*/
+                            {
+                                image: 'https://www.cwp.com.mx/wp-content/uploads/2018/10/espagueti-de-calabacin-y-bolonesa-de-hongos-y-lentejas-768x402.jpg',
+                                name: 'Espaguetti',
+                                energyValue: 158,
+                                description: 'Un delicioso espagueti hecho de maíz importado bañado en una salsa de tomate especiada',
+                                price: 250
+                            },
+                            {
+                                image: 'https://dam.cocinafacil.com.mx/wp-content/uploads/2019/06/Tlayuda-chapulines.jpg',
+                                name: 'Tlayuda',
+                                energyValue: 297,
+                                description: 'Tasajo, sobre tortilla de maiz criollo, acompañada de vegetales frescos y chapulines.',
+                                price: 75
+                            },
+                            {
+                                image: 'https://www.cocinavital.mx/wp-content/uploads/2017/09/tacos-dorados-de-pollo-y-queso-crema-caseros-4-pasos-e1555367130320.jpg',
+                                name: 'Tacos dorados de pollo',
+                                energyValue: 0,
+                                description: 'Delicios tacos dorados de pollo de alta calidad con queso crema de primera y salsa al gusto',
+                                price: 35
+                            },
+                            {
+                                id: 4,
+                                image: "https://cdn2.cocinadelirante.com/sites/default/files/styles/gallerie/public/images/2016/08/tamalesrosas.jpg",
+                                name: "Tamal de dulce",
+                                energyValue: 986,
+                                description: "Rosadito uwu",
+                                price: 47
+                            },
+                            {
+                                image: 'https://pbs.twimg.com/media/DVCe-4rXUAAexeI.jpg',
+                                name: 'Zacahuil',
+                                energyValue: 859,
+                                description: 'tamal gigante que se prepara en comunidades de la Huasteca, : masa quebrada, manteca de cerdo, chile chino, cascabel y carne de cerdo o guajolote.',
+                                price: 89
+                            }
+                        ]
+                    },
+                    selectedDish: {
+                        type: Object
+                    }
+                };
+            }
+
+            __createDish(event) {
+                this.dishes = [...this.dishes, event.detail];
+            }
+
+            __updateDish(event) {
+                const dish = event.model.dish;
+                dish.rate = 4;
+                this.set('pageData.page', 'update');
+                this.set('selectedDish', dish);
+            }
+        }
+
+        window.customElements.define(RestaurantMenuApp.is, RestaurantMenuApp);
+    </script>
+</dom-module>
