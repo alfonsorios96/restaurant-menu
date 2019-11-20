@@ -191,14 +191,14 @@
                             <div class="card-actions">
                                 <div class="horizontal">
                                     <paper-button class="info" on-click="__updateDish">Modificar</paper-button>
-                                    <paper-button class="error">Eliminar</paper-button>
+                                    <paper-button class="error" on-click="__deleteDish">Eliminar</paper-button>
                                 </div>
                             </div>
                         </paper-card>
                     </template>
                 </section>
                 <create-dish view="create" on-dish-created="__createDish"></create-dish>
-                <update-dish view="update" dish="[[selectedDish]]"></update-dish>
+                <update-dish view="update" dish="[[selectedDish]]" on-dish-updated="__dishUpdated"></update-dish>
             </iron-pages>
         </app-drawer-layout>
     </template>
@@ -228,6 +228,7 @@
                                 price: 40
                             },*/
                             {
+                                id: 1,
                                 image: 'https://www.cwp.com.mx/wp-content/uploads/2018/10/espagueti-de-calabacin-y-bolonesa-de-hongos-y-lentejas-768x402.jpg',
                                 name: 'Espaguetti',
                                 energyValue: 158,
@@ -235,6 +236,7 @@
                                 price: 250
                             },
                             {
+                                id: 2,
                                 image: 'https://dam.cocinafacil.com.mx/wp-content/uploads/2019/06/Tlayuda-chapulines.jpg',
                                 name: 'Tlayuda',
                                 energyValue: 297,
@@ -242,6 +244,7 @@
                                 price: 75
                             },
                             {
+                                id: 3,
                                 image: 'https://www.cocinavital.mx/wp-content/uploads/2017/09/tacos-dorados-de-pollo-y-queso-crema-caseros-4-pasos-e1555367130320.jpg',
                                 name: 'Tacos dorados de pollo',
                                 energyValue: 0,
@@ -257,6 +260,7 @@
                                 price: 47
                             },
                             {
+                                id: 5,
                                 image: 'https://pbs.twimg.com/media/DVCe-4rXUAAexeI.jpg',
                                 name: 'Zacahuil',
                                 energyValue: 859,
@@ -280,6 +284,23 @@
                 dish.rate = 4;
                 this.set('pageData.page', 'update');
                 this.set('selectedDish', dish);
+            }
+
+            __deleteDish(event){
+                this._mutateDishesById(event.model.dish.id);
+            }
+
+            __dishUpdated(event){
+                this._mutateDishesById(event.detail.id, event.detail);
+            }
+
+            _mutateDishesById(id, newDish){
+                const index = this.dishes.findIndex(dish => id === dish.id);
+                if(newDish)
+                    this.dishes.splice(index, 1, newDish);
+                else
+                    this.dishes.splice(index, 1);
+                this.dishes = [...this.dishes];
             }
         }
 

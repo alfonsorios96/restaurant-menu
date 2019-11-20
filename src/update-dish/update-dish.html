@@ -153,6 +153,7 @@
 
             __formNewDish(){
                 return {
+                    ...this.dish,
                     image: this.$.image.value,
                     name: this.$.name.value,
                     energyValue: this.$.energyValue.value,
