@@ -19,6 +19,7 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 
 <link rel="import" href="../create-dish/create-dish.html">
+<link rel="import" href="../update-dish/update-dish.html">
 
 <dom-module id="restaurant-menu-app">
     <template>
@@ -154,19 +155,19 @@
                     </app-header>
                     <!-- nav menu -->
                     <!-- Two way binding to the selected property has been removed due to polymer/issues/4405 -->
-                    <paper-listbox selected="{{pageData.page}}" attr-for-selected="name">
-                        <paper-item name="menu">
+                    <paper-listbox selected="{{pageData.page}}" attr-for-selected="view">
+                        <paper-item view="menu">
                             <a href="menu">Menu</a>
                         </paper-item>
-                        <paper-item name="create">
+                        <paper-item view="create">
                             <a href="create">Crear nuevo platillo</a>
                         </paper-item>
                     </paper-listbox>
                 </app-header-layout>
             </app-drawer>
             <!-- list/detail pages -->
-            <iron-pages selected="{{pageData.page}}" attr-for-selected="name">
-                <section name="menu">
+            <iron-pages selected="{{pageData.page}}" attr-for-selected="view">
+                <section view="menu">
                     <template is="dom-repeat" items="[[dishes]]" as="dish">
                         <paper-card
                                 image="[[dish.image]]">
@@ -196,7 +197,8 @@
                         </paper-card>
                     </template>
                 </section>
-                <create-dish name="create" on-dish-created="__createDish"></create-dish>
+                <create-dish view="create" on-dish-created="__createDish"></create-dish>
+                <update-dish view="update" dish="[[selectedDish]]"></update-dish>
             </iron-pages>
         </app-drawer-layout>
     </template>

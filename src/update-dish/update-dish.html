@@ -138,7 +138,8 @@
             static get properties() {
                 return {
                     dish: {
-                        type: Object
+                        type: Object,
+                        observer: '__setProperties'
                     }
                 };
             }
