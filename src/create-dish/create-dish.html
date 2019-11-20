@@ -54,14 +54,14 @@
                 justify-content: center;
             }
 
-            iron-icon.star {
+            .star {
                 --iron-icon-width: 16px;
                 --iron-icon-height: 16px;
-                color: var(--paper-amber-500);
+                color: var(--paper-grey-500);
             }
 
-            iron-icon.star:last-of-type {
-                color: var(--paper-grey-500);
+            .active {
+                color: var(--paper-amber-500);
             }
 
             paper-button {
@@ -135,14 +135,24 @@
                 return 'create-dish';
             }
 
-            __createDish(){
+            static get properties() {
+                return {
+                    rate: {
+                        type: Number,
+                        value: 0,
+                        observer: '__getRate'
+                    }
+                };
+            }
+
+            __createDish() {
                 this.dispatchEvent(new CustomEvent('dish-created', {
                     detail: this.__formNewDish()
                 }));
                 this.__clearForm();
             }
 
-            __formNewDish(){
+            __formNewDish() {
                 return {
                     image: this.$.image.value,
                     name: this.$.name.value,
@@ -152,9 +162,24 @@
                 };
             }
 
-            __clearForm(){
+            __clearForm() {
                 for (const node of Object.values(this.$))
                     node.value = '';
+            }
+
+            __getRate() {
+                const stars = this.shadowRoot.querySelectorAll('.star');
+                this.__clearStar(stars);
+                for (let index = 0; index < this.rate; index++) {
+                    const star = stars[index];
+                    star.classList.add('active');
+                }
+            }
+
+            __clearStar(stars) {
+                for (const star of stars) {
+                    star.classList.remove('active');
+                }
             }
         }
 
