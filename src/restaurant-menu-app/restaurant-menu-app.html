@@ -17,6 +17,7 @@
 
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/rating-component/rating-component.html">
 
 <link rel="import" href="../create-dish/create-dish.html">
 <link rel="import" href="../update-dish/update-dish.html">
@@ -178,13 +179,7 @@
                                         <span>[[dish.energyValue]] cal</span>
                                     </div>
                                 </div>
-                                <div class="cafe-rating">
-                                    <iron-icon class="star" icon="star"></iron-icon>
-                                    <iron-icon class="star" icon="star"></iron-icon>
-                                    <iron-icon class="star" icon="star"></iron-icon>
-                                    <iron-icon class="star" icon="star"></iron-icon>
-                                    <iron-icon class="star" icon="star"></iron-icon>
-                                </div>
+                                <rating-component rate="[[dish.rate]]"></rating-component>
                                 <p>$[[dish.price]].00 MXN</p>
                                 <p class="cafe-light">[[dish.description]]</p>
                             </div>
@@ -232,6 +227,7 @@
                                 image: 'https://www.cwp.com.mx/wp-content/uploads/2018/10/espagueti-de-calabacin-y-bolonesa-de-hongos-y-lentejas-768x402.jpg',
                                 name: 'Espaguetti',
                                 energyValue: 158,
+                                rate: 3,
                                 description: 'Un delicioso espagueti hecho de maíz importado bañado en una salsa de tomate especiada',
                                 price: 250
                             },
@@ -240,6 +236,7 @@
                                 image: 'https://dam.cocinafacil.com.mx/wp-content/uploads/2019/06/Tlayuda-chapulines.jpg',
                                 name: 'Tlayuda',
                                 energyValue: 297,
+                                rate: 5,
                                 description: 'Tasajo, sobre tortilla de maiz criollo, acompañada de vegetales frescos y chapulines.',
                                 price: 75
                             },
@@ -248,6 +245,7 @@
                                 image: 'https://www.cocinavital.mx/wp-content/uploads/2017/09/tacos-dorados-de-pollo-y-queso-crema-caseros-4-pasos-e1555367130320.jpg',
                                 name: 'Tacos dorados de pollo',
                                 energyValue: 0,
+                                rate: 4,
                                 description: 'Delicios tacos dorados de pollo de alta calidad con queso crema de primera y salsa al gusto',
                                 price: 35
                             },
@@ -264,6 +262,7 @@
                                 image: 'https://pbs.twimg.com/media/DVCe-4rXUAAexeI.jpg',
                                 name: 'Zacahuil',
                                 energyValue: 859,
+                                rate: 5,
                                 description: 'tamal gigante que se prepara en comunidades de la Huasteca, : masa quebrada, manteca de cerdo, chile chino, cascabel y carne de cerdo o guajolote.',
                                 price: 89
                             }
